@@ -3,9 +3,9 @@ from apifunctions import get_gw_info, make_league_table
 import asyncio
 from helper_functions import load_json, save_json
 from pathlib import Path
+from config import league_id
 
-# just update the latest set of fixtures with their scores and run the script. 
-league_id = 43953
+
 
 fixture_path = r"C:\Users\Kevwe Fadahunsi\Documents\Coding\React Portfolio\api-dyd\data\cup fixtures\25_26.json"
 fixtures = load_json(fixture_path)

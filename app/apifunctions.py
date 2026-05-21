@@ -1,43 +1,12 @@
 import requests, json
 from pprint import pprint
-from autodraftauth import cookies, headers
 import httpx
 import asyncio
+from config import cookies, headers, entry_ids, league_id, team_ids, full_team_ids
 
-
-ifc_team_id = 324714
-ifc_league_id = 63351
 
 base_url = "https://draft.premierleague.com/api/"
 
-league_id = 43953
-
-entry_ids = {
-        "ASA" : 224216,
-        "SSFC" : 228809,
-        "MMUFC" : 257018,
-        "SLS" : 227314,
-        "DDGP" : 237637,
-        "DTF" : 312224,
-    }
-
-team_ids = {
-        "ASA" : 222315,
-        "SSFC" : 226964,
-        "MMUFC" : 255709,
-        "SLS" : 225455,
-        "DDGP" : 235896,
-        "DTF" : 311434,
-}
-
-full_team_ids = {
-    "Super Slimey Fütbol": 226964,
-    "Amassing Silvaware": 222315,
-    "Maatsen Margiela Utd": 255709,
-    "Saint Laurent Slot": 225455,
-    "Darwin’s Theory": 311434,
-    "Duck Duck Guus Poyet": 235896,
-}
 
 #note, you should never exit(0) for code being used in an api
 #the entry set is the league id

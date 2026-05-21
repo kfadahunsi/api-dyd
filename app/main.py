@@ -10,18 +10,9 @@ from draftcup import produce_league_table, get_semis, get_semi_results, get_fina
 
 from apifunctions import get_gw_info, get_manager_data, get_team_lists, make_league_table
 
-from helper_functions import load_json, save_json
+from helper_functions import load_json
+from config import entry_ids, ALLOWED_ORIGINS
 
-
-
-entry_ids = {
-        "ASA" : 224216,
-        "SSFC" : 228809,
-        "MMUFC" : 257018,
-        "SLS" : 227314,
-        "DDGP" : 237637,
-        "DTF" : 312224,
-    }
 
 async def lifespan(app: FastAPI):
     #startup
@@ -36,7 +27,7 @@ app = FastAPI(lifespan=lifespan)
 #previously, allow credentials was true, but this was changed to false due to errors, if credentials eg auth and cookies are needed, set to tru and then change allow all origins and specify the specific origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
