@@ -1,0 +1,2 @@
+These json files are supposed to be used to help map out types for pydantic or any other typing library. 
+so we can have type safety when parsing responses from the FPL draft API. 

@@ -1,0 +1,20 @@
+{
+  "entry": {
+    "event_points": 45,
+    "favourite_team": 14,
+    "id": 224216,
+    "league_set": [
+      43953
+    ],
+    "name": "Amassing Silvaware",
+    "overall_points": 1431,
+    "player_first_name": "Kevwe",
+    "player_last_name": "Fadahunsi",
+    "region_name": "England",
+    "region_code_short": "EN",
+    "region_code_long": "ENG",
+    "started_event": 1,
+    "transactions_event": 0,
+    "transactions_total": 76
+  }
+}

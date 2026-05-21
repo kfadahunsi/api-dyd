@@ -1,0 +1,42 @@
+{
+  "trades": [
+    {
+      "event": 3,
+      "id": 138702,
+      "offered_entry": 228809,
+      "offer_time": "2025-08-24T16:36:21.465963Z",
+      "received_entry": 227314,
+      "response_time": "2025-08-24T22:56:56.504075Z",
+      "state": "p",
+      "tradeitem_set": [
+        {
+          "element_in": 7,
+          "element_out": 410
+        },
+        {
+          "element_in": 561,
+          "element_out": 136
+        }
+      ]
+    },
+    {
+      "event": 10,
+      "id": 478392,
+      "offered_entry": 224216,
+      "offer_time": "2025-10-31T09:14:35.181081Z",
+      "received_entry": 312224,
+      "response_time": "2025-10-31T09:39:17.109906Z",
+      "state": "p",
+      "tradeitem_set": [
+        {
+          "element_in": 6,
+          "element_out": 225
+        },
+        {
+          "element_in": 84,
+          "element_out": 485
+        }
+      ]
+    }
+  ]
+}
