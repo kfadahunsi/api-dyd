@@ -6,6 +6,8 @@ load_dotenv()  # picks up .env.local automatically
 
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost")
+
 
 #these will change each season
 entry_ids = {

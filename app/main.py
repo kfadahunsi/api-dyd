@@ -11,12 +11,12 @@ from draftcup import produce_league_table, get_semis, get_semi_results, get_fina
 from apifunctions import get_gw_info, get_manager_data, get_team_lists, make_league_table
 
 from helper_functions import load_json
-from config import entry_ids, ALLOWED_ORIGINS
+from config import entry_ids, ALLOWED_ORIGINS, REDIS_URL
 
 
 async def lifespan(app: FastAPI):
     #startup
-    redis = aioredis.from_url("redis://localhost")
+    redis = aioredis.from_url(REDIS_URL)
     FastAPICache.init(RedisBackend(redis), prefix="myapp-cache")
     yield
     # Shutdown (anything after yield runs when the app stops)
