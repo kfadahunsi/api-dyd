@@ -37,7 +37,10 @@ app.add_middleware(
 
 @app.get("/debug")
 def debug():
-    return {"allowed_origins": os.getenv("ALLOWED_ORIGINS")}
+    return {
+        "allowed_origins": os.getenv("ALLOWED_ORIGINS"),
+        "test": os.getenv("TEST_VAR")
+    }
 
 @app.get("/league_table")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)
