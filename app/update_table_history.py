@@ -4,6 +4,11 @@ from pprint import pprint
 from apifunctions import get_gw_info, make_league_table, get_league_details, league_id
 import asyncio
 
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 """
 the purpose of this script is to store the weekly table updates from fpl draft api
 which only provides a snapshot of each week and then is lost once the week has passed. 
@@ -26,7 +31,7 @@ def check_gw(hist_dict, current_gw):
         
 async def update_gw_history():
    
-    file_path = r"C:\Users\Kevwe Fadahunsi\Documents\Coding\React Portfolio\api-dyd\data\table history\25_26.json"
+    file_path = os.path.join(BASE_DIR, "..", "data", "table history", "25_26.json")
     
     gw_info = await get_gw_info()
     details = await get_league_details(league_id)

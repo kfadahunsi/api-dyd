@@ -13,9 +13,7 @@ from apifunctions import get_gw_info, get_manager_data, get_team_lists, make_lea
 from helper_functions import load_json
 from config import entry_ids, ALLOWED_ORIGINS, REDIS_URL
 
-import os
-print("ENV TEST:", os.environ.get("TEST_VAR"))
-print("ALL ENV KEYS:", list(os.environ.keys()))
+
 
 async def lifespan(app: FastAPI):
     #startup
@@ -36,12 +34,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/debug")
-def debug():
-    return {
-        "allowed_origins": os.getenv("ALLOWED_ORIGINS"),
-        "test": os.getenv("TEST_VAR")
-    }
 
 @app.get("/league_table")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)

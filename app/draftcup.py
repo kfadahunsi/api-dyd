@@ -4,11 +4,15 @@ import asyncio
 from helper_functions import load_json, save_json
 from pathlib import Path
 from config import league_id
+import os
 
 
 
-fixture_path = r"C:\Users\Kevwe Fadahunsi\Documents\Coding\React Portfolio\api-dyd\data\cup fixtures\25_26.json"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+fixture_path = os.path.join(BASE_DIR, "..", "data", "cup fixtures", "25_26.json")
 fixtures = load_json(fixture_path)
+print(fixtures)
 
 def print_table(table):
     for team, stats in table.items():

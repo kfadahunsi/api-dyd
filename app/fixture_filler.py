@@ -2,6 +2,11 @@ from helper_functions import load_json, save_json
 from pathlib import Path
 from pprint import pprint
 from apifunctions import full_team_ids
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 
 def get_team_id(team_name):
     for name, team_id in full_team_ids.items():
@@ -10,8 +15,8 @@ def get_team_id(team_name):
     
 
 def fill_cup_table():
-    fixture_path = "testfixtures.json"
-    history_path = r"C:\Users\Kevwe Fadahunsi\Documents\Coding\React Portfolio\api-dyd\data\table history\25_26.json"
+    fixture_path = os.path.join(BASE_DIR, "..", "data", "cup fixtures", "25_26.json")
+    history_path = os.path.join(BASE_DIR, "..", "data", "table history", "25_26.json")
     
     fixtures = load_json(fixture_path)
     gw_history = load_json(history_path)
