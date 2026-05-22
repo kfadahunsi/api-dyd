@@ -15,8 +15,8 @@ def get_team_id(team_name):
     
 
 def fill_cup_table():
-    fixture_path = os.path.join(BASE_DIR, "..", "data", "cup fixtures", "25_26.json")
-    history_path = os.path.join(BASE_DIR, "..", "data", "table history", "25_26.json")
+    fixture_path = os.path.normpath(os.path.join(BASE_DIR, "..", "data", "cup_fixtures", "25_26.json"))
+    history_path = os.path.normpath(os.path.join(BASE_DIR, "..", "data", "table_history", "25_26.json"))
     
     fixtures = load_json(fixture_path)
     gw_history = load_json(history_path)

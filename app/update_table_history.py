@@ -31,7 +31,7 @@ def check_gw(hist_dict, current_gw):
         
 async def update_gw_history():
    
-    file_path = os.path.join(BASE_DIR, "..", "data", "table history", "25_26.json")
+    file_path = os.path.normpath(os.path.join(BASE_DIR, "..", "data", "table_history", "25_26.json"))
     
     gw_info = await get_gw_info()
     details = await get_league_details(league_id)
