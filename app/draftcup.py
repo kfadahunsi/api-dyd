@@ -10,9 +10,7 @@ import os
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-fixture_path = os.path.join(BASE_DIR, "..", "data", "cup fixtures", "25_26.json")
-fixtures = load_json(fixture_path)
-print(fixtures)
+
 
 def print_table(table):
     for team, stats in table.items():
@@ -89,8 +87,11 @@ def process_fixtures(team_stats, fixtures):
             
             
 def produce_league_table():
+    fixture_path = os.path.join(BASE_DIR, "..", "data", "cup fixtures", "25_26.json")
+    fixtures = load_json(fixture_path)
     team_stats = get_initial_team_stats()
     process_fixtures(team_stats, fixtures)
+    
     return dict(sorted(team_stats.items(), key= lambda item:( 
         item[1]["league_points"],
         item[1]["points_for"],
