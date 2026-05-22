@@ -12,13 +12,11 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 fixture_path = os.path.join(BASE_DIR, "..", "data", "cup fixtures", "25_26.json")
 fixtures = load_json(fixture_path)
-<<<<<<< HEAD
 
 print("BASE_DIR:", BASE_DIR)
 print("fixture_path:", fixture_path)
 print("File exists:", os.path.exists(fixture_path))
-=======
->>>>>>> a24bab99e29cb67029c2f73ab28ef6ca5cc09b1a
+
 
 def print_table(table):
     for team, stats in table.items():
