@@ -12,7 +12,11 @@ from apifunctions import get_gw_info, get_manager_data, get_team_lists, make_lea
 
 from helper_functions import load_json
 from config import entry_ids, ALLOWED_ORIGINS, REDIS_URL
+import os
 
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 async def lifespan(app: FastAPI):
@@ -51,8 +55,8 @@ def cup_table():
 @app.get("/fixtures")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)
 def fixtures():
-    file_path = r"C:\Users\Kevwe Fadahunsi\Documents\Coding\React Portfolio\api-dyd\data\cup fixtures\25_26.json"
-    fixtures = load_json(file_path)
+    fixture_path = os.path.join(BASE_DIR, "..", "data", "cup fixtures", "25_26.json")
+    fixtures = load_json(fixture_path)
     return fixtures
 
 @app.get("/gw_status")
