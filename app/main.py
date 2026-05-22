@@ -55,7 +55,7 @@ def cup_table():
 @app.get("/fixtures")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)
 def fixtures():
-    fixture_path = os.path.normpath(os.path.join(BASE_DIR, "..", "data", "cup_fixtures", "25_26.json"))
+    fixture_path = os.path.normpath(os.path.join(BASE_DIR, "data", "cup_fixtures", "25_26.json"))
     fixtures = load_json(fixture_path)
     return fixtures
 

@@ -10,7 +10,7 @@ import os
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-fixture_path = os.path.normpath(os.path.join(BASE_DIR, "..", "data", "cup_fixtures", "25_26.json"))
+fixture_path = os.path.normpath(os.path.join(BASE_DIR, "data", "cup_fixtures", "25_26.json"))
 fixtures = load_json(fixture_path)
 
 print("BASE_DIR:", BASE_DIR)
