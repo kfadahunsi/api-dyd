@@ -1,8 +1,4 @@
 import os
-from dotenv import load_dotenv
-
-
-load_dotenv(override=False)  # picks up .env.local automatically
 
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
