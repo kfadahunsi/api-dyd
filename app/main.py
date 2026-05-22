@@ -14,7 +14,8 @@ from helper_functions import load_json
 from config import entry_ids, ALLOWED_ORIGINS, REDIS_URL
 
 import os
-
+print("ENV TEST:", os.environ.get("TEST_VAR"))
+print("ALL ENV KEYS:", list(os.environ.keys()))
 
 async def lifespan(app: FastAPI):
     #startup
