@@ -154,19 +154,9 @@ async def get_semi_results():
         return semi_finalists
     
     elif gw_info["current_event"] > 37:
-        semi_finalists = await get_semis()
-        league_table = await make_league_table()
-        for semifinal in semi_finalists.values():
-           for team_name, team_info in league_table.items():
-               if team_name == semifinal["home"]:
-                   semifinal["home_score"] = team_info["event_total"]
-               if team_name == semifinal["away"]:
-                   semifinal["away_score"] = team_info["event_total"]
-                   
-                   
-        save_json(semi_finalists, "gw37table.json")
-        return semi_finalists
+        semi_finalists = load_json("gw37table.json")
 
+        return semi_finalists
     
     else:
         return None

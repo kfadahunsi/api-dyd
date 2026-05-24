@@ -361,7 +361,7 @@ async def show_raw_standings():
     pprint(standings)
     
     
-#asyncio.run(show_raw_standings())
+#asyncio.run(get_manager_data(entry_ids["ASA"]))
 #print(get_gw_info())
 
     
