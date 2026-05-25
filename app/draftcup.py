@@ -12,10 +12,12 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 fixture_path = os.path.normpath(os.path.join(BASE_DIR, "data", "cup_fixtures", "25_26.json"))
 fixtures = load_json(fixture_path)
+semi_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", "sf25_26.json"))
+semi_results_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", "sf_results25_26.json"))
+finals_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", "finals25_26.json"))
+finals_results_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", "finals_results25_26.json"))
 
-print("BASE_DIR:", BASE_DIR)
-print("fixture_path:", fixture_path)
-print("File exists:", os.path.exists(fixture_path))
+
 
 
 def print_table(table):
@@ -103,21 +105,21 @@ def produce_league_table():
 
 
 async def get_semis():
-    cup_table = {}
-    semi_finals = {}
     gw_info = await get_gw_info()
     if gw_info["current_event"] == 36 and gw_info["current_event_finished"] == True: #remember to change the first condition to 36 and  the second condition to True 
+        cup_table = {}
+        semi_finals = {}
+        
         cup_table = produce_league_table()
         semi_finalists = list(cup_table.keys())[0:4]
         semi_finals["1"] = {"home":semi_finalists[0], "away":semi_finalists[3], "home_score": None, "away_score": None}
         semi_finals["2"] = {"home":semi_finalists[1], "away":semi_finalists[2], "home_score": None, "away_score": None}
-
+        save_json(semi_finals, semi_path)
         return semi_finals
+    
+    
     elif gw_info["current_event"] > 36:
-        cup_table = produce_league_table()
-        semi_finalists = list(cup_table.keys())[0:4]
-        semi_finals["1"] = {"home":semi_finalists[0], "away":semi_finalists[3], "home_score": None, "away_score": None}
-        semi_finals["2"] = {"home":semi_finalists[1], "away":semi_finalists[2], "home_score": None, "away_score": None}
+        semi_finals = load_json(semi_path)
 
         return semi_finals
     else: 
@@ -127,7 +129,7 @@ async def get_semi_results():
     semi_finalists = {}
     league_table = {}
     gw_info = await get_gw_info()
-    if gw_info["current_event"] == 37 and gw_info["current_event_finished"] == True: #remember to change the first condition to 36 and  the second condition to True  
+    if gw_info["current_event"] == 37 and gw_info["current_event_finished"] == False: #remember to change the first condition to 36 and  the second condition to True  
         semi_finalists = await get_semis()
         league_table = await make_league_table()
         for semifinal in semi_finalists.values():
@@ -150,21 +152,11 @@ async def get_semi_results():
                    semifinal["away_score"] = team_info["event_total"]
                    
                    
-        save_json(semi_finalists, "gw37table.json")
+        save_json(semi_finalists, semi_results_path)
         return semi_finalists
     
     elif gw_info["current_event"] > 37:
-        semi_finalists = await get_semis()
-        league_table = await make_league_table()
-        for semifinal in semi_finalists.values():
-           for team_name, team_info in league_table.items():
-               if team_name == semifinal["home"]:
-                   semifinal["home_score"] = team_info["event_total"]
-               if team_name == semifinal["away"]:
-                   semifinal["away_score"] = team_info["event_total"]
-                   
-                   
-        save_json(semi_finalists, "gw37table.json")
+        semi_finalists = load_json(semi_results_path)
         return semi_finalists
 
     
@@ -189,6 +181,12 @@ async def get_finalists():
         if semi_results["2"]["away_score"] > semi_results["2"]["home_score"]:
             finalists["away"] = {"name" : semi_results["2"]["away"], "score" : None}
         
+        save_json(finalists, finals_path)
+        
+        return finalists
+    
+    elif gw_info["current_event"] > 37:
+        finalists = load_json(finals_path)
         return finalists
     else:
         return None
@@ -217,7 +215,8 @@ async def get_finals():
             for club, info in league_table.items():
                 if finalist["name"] == club:
                     finalist["score"] = info["event_total"]
-        #save_json(finals, "finals.json")
+                    
+        save_json(finals, finals_results_path)
         return finals
     else:
         return None
@@ -227,7 +226,7 @@ async def get_winner():
     finals = {}
     winner = {}
     gw_info = await get_gw_info()
-    if gw_info["current_event"] == 38 and gw_info["current_event_finished"] == False: #remember to change the first condition to 36 and  the second condition to True
+    if gw_info["current_event"] == 38 and gw_info["current_event_finished"] == True:
         finals =  await get_finals()
         league_table = await make_league_table()
         for team, details in league_table.items():
