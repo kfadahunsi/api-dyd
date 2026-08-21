@@ -5,36 +5,37 @@ ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost")
 
 
-#these will change each season
+# 26/27 season — IDs from GET /league/{league_id}/details
+# entry_id: used for /entry/{id}/public and squads (GW picks)
+# id (league_entry): used in standings as league_entry
 entry_ids = {
-        "ASA" : 224216,
-        "SSFC" : 228809,
-        "MMUFC" : 257018,
-        "SLS" : 227314,
-        "DDGP" : 237637,
-        "DTF" : 312224,
+        "ASA": 1097,
+        "SSFC": 96198,
+        "DTF": 96968,
+        "DVFF": 195192,
+        "SLS": 213720,
+        "MMUFC": 244365,
     }
 
-#this changes per season
-league_id = 43953
+league_id = 521
 
-#these will change each season
 team_ids = {
-        "ASA" : 222315,
-        "SSFC" : 226964,
-        "MMUFC" : 255709,
-        "SLS" : 225455,
-        "DDGP" : 235896,
-        "DTF" : 311434,
+        "ASA": 1097,
+        "SSFC": 96458,
+        "DTF": 97236,
+        "DVFF": 196222,
+        "SLS": 214991,
+        "MMUFC": 246326,
 }
 
+# Keys must match FPL entry_name — they are the labels on the league table
 full_team_ids = {
-    "Super Slimey Fütbol": 226964,
-    "Amassing Silvaware": 222315,
-    "Maatsen Margiela Utd": 255709,
-    "Saint Laurent Slot": 225455,
-    "Darwin’s Theory": 311434,
-    "Duck Duck Guus Poyet": 235896,
+    "Amassing Silvaware": 1097,
+    "Super Slimey Fütbol": 96458,
+    "Darwin’s Theory": 97236,
+    "De Vrij Fish Futbol": 196222,
+    "Saint Laurent Slot": 214991,
+    "Maatsen Margiela Utd": 246326,
 }
 
 

@@ -27,7 +27,7 @@ def print_table(table):
 def get_initial_team_stats():
     return {
         "Amassing Silvaware": {"played": 0,"wins": 0,"draws": 0, "losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
-        "Duck Duck Guus Poyet": {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
+        "De Vrij Fish Futbol": {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
         "Darwin’s Theory": {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
         "Maatsen Margiela Utd": {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
         "Saint Laurent Slot": {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
