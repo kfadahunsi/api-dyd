@@ -2,7 +2,7 @@ import requests, json
 from pprint import pprint
 import httpx
 import asyncio
-from config import cookies, headers, entry_ids, league_id, team_ids, full_team_ids
+from config import entry_ids, league_id, team_ids, full_team_ids
 
 
 base_url = "https://draft.premierleague.com/api/"
@@ -112,20 +112,9 @@ async def get_trades():
         print(f"Error {response.status_code}: {response.text}")
         return None
 
-async def get_transactions(team_id):
-    """
-    requires special access.
-    returns all the transactions made for the specified ID.
-    ensure to add headers and payload if necessary 
-    """
-    async with httpx.AsyncClient() as client:
-        response = await client.get(base_url + f"draft/entry/{team_id}/transactions", headers=headers, cookies=cookies) #unable to check because of team ID
-    if response.status_code == 200:
-        data = response.json()
-        return data
-    else:
-        print(f"Error {response.status_code}: {response.text}")
-        return None
+#get_transactions() lived here. it needed a logged in session and was never called
+#by any endpoint, so it went with the credentials rather than being left as dead code
+#that only works if you paste secrets back into config.py
 
 
 async def get_status():
@@ -193,15 +182,9 @@ async def get_choices():
 
 
 
-async def get_watchlist(team_id):
-    """
-    requires special access.
-    watchlist
-    ensure to add headers and payload if necessary
-    """
-    pass
-    #async with httpx.AsyncClient() as client:
-        #response = client.get(base_url + f"watchlist/{team_id}" , headers=headers, cookies=cookies) #unable to check because of team ID
+#get_watchlist() lived here. it was never implemented beyond a commented out request
+#that needed a logged in session, so it went with the credentials too
+
 
 async def get_team_gw(entry_id, gw):
     """
@@ -225,17 +208,18 @@ async def get_team_gw(entry_id, gw):
 
 async def get_dynamic_info():
     """
-    returns dictionary with entries 'player', 'entries', 'leagues', 'time', 'active'. 
-    all entries empty. 
-    when logged in with headers and cookies:
+    returns dictionary with entries 'player', 'entries', 'leagues', 'time', 'active'.
+    all entries empty except 'time', which is all this is useful for.
+
+    this call returns 200 unauthenticated, it just leaves the personal fields blank,
+    so it no longer sends any credentials. logged in it would also return:
     player - players email, name and other personal info
     leagues - all the leagues they are in, including mocks
-    entries - list of every league you entered in order, including mocks 
+    entries - list of every league you entered in order, including mocks
     active - which league is currently selected, including the watchlist
-    time - the time as a raw number
     """
     async with httpx.AsyncClient() as client:
-        response = await client.get(base_url + f"bootstrap-dynamic" , headers=headers, cookies=cookies) # nothing useful. just provides datetime
+        response = await client.get(base_url + f"bootstrap-dynamic")
     if response.status_code == 200:
         data = response.json()
         return data
