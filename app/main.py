@@ -8,11 +8,10 @@ from contextlib import asynccontextmanager
 import httpx
 import os
 
-from draftcup import produce_league_table, get_semis, get_semi_results, get_finals, get_winner, fixture_path
+from draftcup import produce_league_table, get_semis, get_semi_results, get_finals, get_winner, fixture_path, get_fixtures
 
 from apifunctions import get_gw_info, get_manager_data, get_team_lists, make_league_table, base_url
 
-from helper_functions import load_json
 from config import entry_ids, ALLOWED_ORIGINS, REDIS_URL, SEASON, full_team_ids
 
 
@@ -81,7 +80,7 @@ async def health_detailed(response: Response):
     #renamed in config the fixture file still held the old name and every request
     #died on a bare KeyError
     try:
-        fixtures = load_json(fixture_path)
+        fixtures = get_fixtures()
         named = {name for fixture in fixtures for name in (fixture["home"], fixture["away"])}
         unknown = sorted(named - set(full_team_ids))
         checks["fixtures"] = {
@@ -139,7 +138,7 @@ def cup_table():
 @app.get("/fixtures")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)
 def fixtures():
-    return load_json(fixture_path)
+    return get_fixtures()
 
 @app.get("/gw_status")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)

@@ -11,13 +11,28 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 fixture_path = os.path.normpath(os.path.join(BASE_DIR, "data", "cup_fixtures", f"{SEASON}.json"))
-fixtures = load_json(fixture_path)
 semi_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", f"sf{SEASON}.json"))
 semi_results_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", f"sf_results{SEASON}.json"))
 finals_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", f"finals{SEASON}.json"))
 finals_results_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", f"finals_results{SEASON}.json"))
 
 
+
+
+def get_fixtures():
+    """
+    reads the cup fixtures on demand.
+
+    this used to be a module level load. that meant a missing, misnamed, malformed
+    or wrongly encoded fixture file raised during import and took the whole api down
+    at startup, /health included, even though only /cup_table and /fixtures actually
+    need this file. loading here keeps the failure to those two endpoints and leaves
+    the health check alive to report which one is unhappy.
+
+    it also picks up scores written by fixture_filler.py without needing a redeploy,
+    which the module level load did not.
+    """
+    return load_json(fixture_path)
 
 
 def print_table(table):
@@ -105,7 +120,7 @@ def process_fixtures(team_stats, fixtures):
             
 def produce_league_table():
     team_stats = get_initial_team_stats()
-    process_fixtures(team_stats, fixtures)
+    process_fixtures(team_stats, get_fixtures())
     
     return dict(sorted(team_stats.items(), key= lambda item:( 
         item[1]["league_points"],
