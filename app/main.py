@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response, status
+from fastapi import FastAPI, HTTPException, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
@@ -7,6 +7,7 @@ import redis.asyncio as aioredis
 from contextlib import asynccontextmanager
 import httpx
 import os
+import json
 
 from draftcup import produce_league_table, get_semis, get_semi_results, get_finals, get_winner, fixture_path, get_fixtures
 
@@ -34,6 +35,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+#the season data files are the one thing that can be broken while the rest of the api
+#is perfectly healthy, so the two endpoints that read them return a 503 carrying a
+#reason rather than a bare 500. the frontend reads err.detail off the response body
+def fixture_data_unavailable(exc):
+    #note json.JSONDecodeError subclasses ValueError, so it has to be matched first
+    #or a malformed file gets reported as a team name mismatch
+    if isinstance(exc, (FileNotFoundError, json.JSONDecodeError, UnicodeDecodeError)):
+        reason = f"the {SEASON} fixture file ({os.path.basename(fixture_path)}) could not be read"
+    else:
+        reason = f"the {SEASON} fixture file does not match the teams in the league config"
+
+    print(f"fixture data unavailable: {type(exc).__name__}: {exc}") #keep the detail in the railway logs
+    return HTTPException(
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        detail=f"Cup fixtures are unavailable — {reason}. See /health/detailed.",
+    )
 
 
 @app.get("/health")
@@ -133,12 +152,18 @@ async def league_table():
 @app.get("/cup_table")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)
 def cup_table():
-    return produce_league_table()
+    try:
+        return produce_league_table()
+    except (FileNotFoundError, UnicodeDecodeError, ValueError) as e:
+        raise fixture_data_unavailable(e)
 
 @app.get("/fixtures")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)
 def fixtures():
-    return get_fixtures()
+    try:
+        return get_fixtures()
+    except (FileNotFoundError, UnicodeDecodeError, ValueError) as e:
+        raise fixture_data_unavailable(e)
 
 @app.get("/gw_status")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)
