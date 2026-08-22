@@ -6,17 +6,12 @@ from fastapi_cache.decorator import cache
 import redis.asyncio as aioredis
 from contextlib import asynccontextmanager
 
-from draftcup import produce_league_table, get_semis, get_semi_results, get_finals, get_winner
+from draftcup import produce_league_table, get_semis, get_semi_results, get_finals, get_winner, fixture_path
 
 from apifunctions import get_gw_info, get_manager_data, get_team_lists, make_league_table
 
 from helper_functions import load_json
 from config import entry_ids, ALLOWED_ORIGINS, REDIS_URL
-import os
-
-
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 async def lifespan(app: FastAPI):
@@ -55,9 +50,7 @@ def cup_table():
 @app.get("/fixtures")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)
 def fixtures():
-    fixture_path = os.path.normpath(os.path.join(BASE_DIR, "data", "cup_fixtures", "25_26.json"))
-    fixtures = load_json(fixture_path)
-    return fixtures
+    return load_json(fixture_path)
 
 @app.get("/gw_status")
 @cache(expire=300) #caching so it makes a new api acall after 300s (5 mins)

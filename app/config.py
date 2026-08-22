@@ -5,6 +5,10 @@ ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 REDIS_URL = os.getenv("REDIS_URL", "redis://localhost")
 
 
+#bump this once per season. every data file path is derived from it, so the
+#cup fixtures, knockout and table history files must be named to match. do not bump until you have created the fixture file.
+SEASON = "26_27"
+
 # 26/27 season — IDs from GET /league/{league_id}/details
 # entry_id: used for /entry/{id}/public and squads (GW picks)
 # id (league_entry): used in standings as league_entry
@@ -48,8 +52,6 @@ full_team_ids = {
 
 ifc_team_id = 324714
 ifc_league_id = 63351
-
-
 
 
 #the below can be used for accessing the restricted endpoints, maybe useful in future updates 
@@ -105,3 +107,4 @@ Click on copy value > copy as cURL (POSIX)
 Paste the copied info to this site https://curlconverter.com/
 This will generate the headers and cookies you need to put into any request that requires them
 """
+

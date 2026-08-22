@@ -3,19 +3,19 @@ from apifunctions import get_gw_info, make_league_table
 import asyncio
 from helper_functions import load_json, save_json
 from pathlib import Path
-from config import league_id
+from config import league_id, full_team_ids, SEASON
 import os
 
 
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-fixture_path = os.path.normpath(os.path.join(BASE_DIR, "data", "cup_fixtures", "25_26.json"))
+fixture_path = os.path.normpath(os.path.join(BASE_DIR, "data", "cup_fixtures", f"{SEASON}.json"))
 fixtures = load_json(fixture_path)
-semi_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", "sf25_26.json"))
-semi_results_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", "sf_results25_26.json"))
-finals_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", "finals25_26.json"))
-finals_results_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", "finals_results25_26.json"))
+semi_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", f"sf{SEASON}.json"))
+semi_results_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", f"sf_results{SEASON}.json"))
+finals_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", f"finals{SEASON}.json"))
+finals_results_path = os.path.normpath(os.path.join(BASE_DIR, "data", "knockout", f"finals_results{SEASON}.json"))
 
 
 
@@ -25,15 +25,18 @@ def print_table(table):
         print(team + " P: " + str(stats["played"]) +" W: "+ str(stats["wins"]) +" L: " + str(stats["losses"]) +" PF: " + str(stats["points_for"]) +" PA: " + str(stats["points_against"]) +" PTS: " + str(stats["league_points"]))
 
 def get_initial_team_stats():
+    """
+    builds a blank row for every team in the league. the names come from
+    full_team_ids so there is one source of truth. if a fixture names a team
+    that isn't in the config, that's a real mismatch and should be caught early
+    rather than blowing up mid way through process_match.
+    """
     return {
-        "Amassing Silvaware": {"played": 0,"wins": 0,"draws": 0, "losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
-        "De Vrij Fish Futbol": {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
-        "Darwin’s Theory": {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
-        "Maatsen Margiela Utd": {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
-        "Saint Laurent Slot": {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
-        "Super Slimey Fütbol": {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,},
-    }       
-        
+        name: {"played": 0,"wins": 0,"draws": 0,"losses": 0,"points_for": 0,"points_against": 0,"league_points": 0,}
+        for name in full_team_ids
+    }
+
+
 def process_match(team_stats, home_team, away_team, home_score, away_score):
     """
     checks the home score and away score for each fixture. updates the team stats table.
@@ -87,6 +90,12 @@ def process_fixtures(team_stats, fixtures):
     if yes, calls the process match function for the fixture
     """
     
+    #catch a stale fixture file before processing anything. a team name in the
+    #fixtures that isn't in the config means the file is from a previous season
+    unknown = {name for fixture in fixtures for name in (fixture["home"], fixture["away"]) if name not in team_stats}
+    if unknown:
+        raise ValueError(f"fixture file names teams that aren't in full_team_ids: {sorted(unknown)}. check SEASON in config.py")
+
     for fixture in fixtures:
         #skip unplayed fixtures
         if fixture["home_score"] is None:

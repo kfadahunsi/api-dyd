@@ -3,13 +3,14 @@ from pathlib import Path
 from pprint import pprint
 import os
 from helper_functions import get_team_id
+from config import SEASON
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def fill_cup_table():
-    fixture_path = os.path.normpath(os.path.join(BASE_DIR, "data", "cup_fixtures", "25_26.json"))
-    history_path = os.path.normpath(os.path.join(BASE_DIR, "data", "table_history", "25_26.json"))
+    fixture_path = os.path.normpath(os.path.join(BASE_DIR, "data", "cup_fixtures", f"{SEASON}.json"))
+    history_path = os.path.normpath(os.path.join(BASE_DIR, "data", "table_history", f"{SEASON}.json"))
     
     fixtures = load_json(fixture_path)
     gw_history = load_json(history_path)

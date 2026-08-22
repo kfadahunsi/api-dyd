@@ -2,6 +2,7 @@ from helper_functions import load_json, save_json
 from pathlib import Path
 from pprint import pprint
 from apifunctions import get_gw_info, make_league_table, get_league_details, league_id
+from config import SEASON
 import asyncio
 
 import os
@@ -16,8 +17,8 @@ with this we can preserve each week in a JSON file and load it to use for things
 """
 
 """
-at the start of a new season, change the file_path variable to a new name with the season year so that the information
-can be generated and put into a new json file. 
+at the start of a new season, bump SEASON in config.py. the file path below is derived from it, so a new
+json file will be generated for the new season automatically.
 """
 
 
@@ -31,7 +32,7 @@ def check_gw(hist_dict, current_gw):
         
 async def update_gw_history():
    
-    file_path = os.path.normpath(os.path.join(BASE_DIR, "data", "table_history", "25_26.json"))
+    file_path = os.path.normpath(os.path.join(BASE_DIR, "data", "table_history", f"{SEASON}.json"))
     
     gw_info = await get_gw_info()
     details = await get_league_details(league_id)

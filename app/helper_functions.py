@@ -1,6 +1,6 @@
 import json 
 from pathlib import Path
-from apifunctions import full_team_ids
+from config import full_team_ids
 
 
 def save_json(data, file_path):
